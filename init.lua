@@ -38,3 +38,20 @@ require "autocmds"
 vim.schedule(function()
   require "mappings"
 end)
+
+vim.g.vista_default_executive = "nvim_lsp"
+-- e.g., more compact: ["▸ ", ""]
+vim.g.vista_icon_indent = {
+  "╰─▸ ",
+  "├─▸ ",
+}
+
+vim.g.vista_fzf_preview = "right:60%"
+--
+-- -- Ensure you have installed some decent font to show these pretty symbols, then you can enable icon for the kind.
+-- vim.g.vista#renderer#enable_icon = 1
+--
+-- vim.g.vista#renderer#icons = {
+--   function = "\uf794",
+--   variable = "\uf71b",
+-- }

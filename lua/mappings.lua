@@ -26,6 +26,16 @@ nomap("n", "<leader>wk")
 -- blankline
 nomap("n", "<leader>cc")
 
+-- lsp stuff
+-- https://github.com/NvChad/NvChad/blob/b657b0ef84a6aa9a86ac05341d1bc1ab5f037ee7/lua/nvchad/configs/lspconfig.lua
+-- nomap("n", "<leader>sh")
+-- nomap("n", "<leader>wa")
+-- nomap("n", "<leader>wr")
+-- nomap("n", "<leader>wl")
+-- nomap("n", "<leader>D")
+-- nomap("n", "<leader>ra")
+-- nomap("n", "<leader>ca")
+--
 -- lsp diagnostic
 nomap("n", "<leader>ds") -- remapped to <leader>ld (lsp diagnostic)
 
@@ -134,7 +144,7 @@ map("n", "<leader>gt", function()
 end, { desc = "GitBlame | Toggle Blame", silent = true })
 
 map("n", "<leader>lf", function()
-  require("conform").format { lsp_fallback = true }
+  require("configs.conform").format { lsp_fallback = true }
 end, { desc = "format files" })
 
 -- global lsp mappings

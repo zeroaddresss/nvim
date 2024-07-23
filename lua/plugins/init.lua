@@ -153,18 +153,26 @@ return {
     "Exafunction/codeium.vim",
     event = "BufEnter",
     config = function()
+      vim.keymap.set("i", "<C-,>", function()
+        return vim.fn["codeium#Complete"]()
+      end, { expr = true, silent = true })
+
       vim.keymap.set("i", "<C-i>", function()
         return vim.fn["codeium#Chat"]()
       end, { expr = true, silent = true })
+
       vim.keymap.set("i", "<C-g>", function()
         return vim.fn["codeium#Accept"]()
       end, { expr = true, silent = true })
+
       vim.keymap.set("i", "<c-;>", function()
         return vim.fn["codeium#CycleCompletions"](1)
       end, { expr = true, silent = true })
-      vim.keymap.set("i", "<c-,>", function()
+
+      vim.keymap.set("i", "<c-'>", function()
         return vim.fn["codeium#CycleCompletions"](-1)
       end, { expr = true, silent = true })
+
       vim.keymap.set("i", "<c-x>", function()
         return vim.fn["codeium#Clear"]()
       end, { expr = true, silent = true })
@@ -270,7 +278,7 @@ return {
     -- setting the keybinding for LazyGit with 'keys' is recommended in
     -- order to load the plugin when the command is run for the first time
     keys = {
-      { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
+      { "<leader>gg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
     },
   },
   {
@@ -351,7 +359,6 @@ return {
         if not status_ok then
           return vim.notify "toggleterm.nvim isn't installed!!!"
         end
-
         local Terminal = require("toggleterm.terminal").Terminal
         local lazygit = Terminal:new { cmd = "lazygit", hidden = true }
         lazygit:toggle()
@@ -494,5 +501,26 @@ return {
       { "<leader>tc", "<cmd>TagbarClose<cr>", desc = "Toggle Close" },
     },
   },
-  { "liuchengxu/vista.vim" },
+  {
+    "liuchengxu/vista.vim",
+    lazy = false,
+    init = function()
+      vim.keymap.set("n", "<leader>to", "<cmd>Vista!!<cr>", { desc = "Vista | Toggle Overview" })
+    end,
+  },
+  {
+    "hrsh7th/nvim-cmp",
+    opts = function()
+      local config = require "nvchad.configs.cmp"
+      config.mapping["<Tab>"] = nil
+      config.mapping["<S-Tab>"] = nil
+      return config
+    end,
+  },
+  {
+    "m4xshen/hardtime.nvim",
+    dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
+    opts = {},
+    lazy = false,
+  },
 }
