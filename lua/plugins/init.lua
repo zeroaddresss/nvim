@@ -87,8 +87,9 @@ return {
         { "<leader>g", group = "Git", icon = "󰊢" },
         { "<leader>l", group = "LSP", icon = "" },
         { "<leader>f", group = "Find", icon = "" },
-        { "<leader>b", group = "Buffer", icon = "" },
+        -- { "<leader>b", group = "Buffer", icon = "" },
         { "<leader>t", group = "Terminal", icon = "" },
+        { "<leader>n", group = "Neovim", icon = "" },
       }
     end,
   },
@@ -217,9 +218,6 @@ return {
     "folke/todo-comments.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
     lazy = false,
-    init = function()
-      vim.keymap.set("n", "<leader>fT", "<cmd>TodoTelescope<cr>", { desc = "Todo | Telescope", silent = true })
-    end,
     config = function()
       require("todo-comments").setup {}
     end,
@@ -349,7 +347,14 @@ return {
       )
 
       vim.keymap.set("n", "<leader>gg", function()
-        ClickGit()
+        local status_ok, _ = pcall(require, "toggleterm")
+        if not status_ok then
+          return vim.notify "toggleterm.nvim isn't installed!!!"
+        end
+
+        local Terminal = require("toggleterm.terminal").Terminal
+        local lazygit = Terminal:new { cmd = "lazygit", hidden = true }
+        lazygit:toggle()
       end, { desc = "ToggleTerm | Lazygit", silent = true })
     end,
     cmd = {
@@ -385,8 +390,8 @@ return {
       },
       float_opts = {
         border = "rounded",
-        height = math.ceil(vim.o.lines * 1.0 - 4),
-        width = math.ceil(vim.o.columns * 1.0),
+        height = math.ceil(vim.o.lines * 1.0 - 20),
+        width = math.ceil(vim.o.columns * 1.0 - 20),
         winblend = 0,
       },
     },
@@ -486,7 +491,7 @@ return {
     "majutsushi/tagbar",
     keys = {
       { "<leader>tt", "<cmd>TagbarToggle<cr>", desc = "Toggle Tagbar" },
-      { "<leadeer>tc", "<cmd>TagbarClose<cr>", desc = "Toggle Close" },
+      { "<leader>tc", "<cmd>TagbarClose<cr>", desc = "Toggle Close" },
     },
   },
   { "liuchengxu/vista.vim" },
