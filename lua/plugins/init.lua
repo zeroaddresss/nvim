@@ -523,4 +523,35 @@ return {
     opts = {},
     lazy = false,
   },
+  {
+    "pwntester/octo.nvim",
+    lazy = false,
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim",
+      -- OR 'ibhagwan/fzf-lua',
+      "nvim-tree/nvim-web-devicons",
+    },
+    config = function()
+      require("octo").setup()
+    end,
+  },
+  {
+    "lewis6991/gitsigns.nvim",
+    opts = {
+      on_attach = function(bufnr)
+        local gs = package.loaded.gitsigns
+
+        local function opts(desc)
+          return { buffer = bufnr, desc = desc }
+        end
+
+        local map = vim.keymap.set
+
+        map("n", "<leader>gH", gs.reset_hunk, opts "Reset Hunk")
+        map("n", "<leader>gh", gs.preview_hunk, opts "Preview Hunk")
+        map("n", "<leader>gb", gs.blame_line, opts "Blame Line")
+      end,
+    },
+  },
 }
