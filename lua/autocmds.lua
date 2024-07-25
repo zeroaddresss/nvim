@@ -14,6 +14,15 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   end,
 })
 
+-- highlight on yank
+local highlight_yank_group = vim.api.nvim_create_augroup("HighlightYankGroup", {})
+vim.api.nvim_create_autocmd("TextYankPost", {
+  group = highlight_yank_group,
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+})
+
 -- lsp stuff
 -- https://github.com/NvChad/NvChad/blob/b657b0ef84a6aa9a86ac05341d1bc1ab5f037ee7/lua/nvchad/configs/lspconfig.lua
 -- nomap("n", "<leader>sh")

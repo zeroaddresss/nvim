@@ -30,11 +30,13 @@ return {
         "html-lsp",
         "css-lsp",
         "prettier",
+        "prettierd",
         "gopls",
         "ruff",
         "ruff-lsp",
         "solidity",
         "solidity-ls",
+        "solhint",
         "typescript-language-server",
       },
     },
@@ -219,6 +221,10 @@ return {
       require("notify").setup {
         background_colour = "#000000",
         enabled = false,
+        render = "compact",
+        stages = "fade",
+        top_down = false,
+        -- timeout = 3000,
       }
     end,
   },
@@ -553,5 +559,10 @@ return {
         map("n", "<leader>gb", gs.blame_line, opts "Blame Line")
       end,
     },
+  },
+  {
+    "creativenull/efmls-configs-nvim",
+    version = "v1.x.x", -- version is optional, but recommended
+    dependencies = { "neovim/nvim-lspconfig" },
   },
 }
