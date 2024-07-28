@@ -3,7 +3,15 @@ local on_init = require("nvchad.configs.lspconfig").on_init
 local capabilities = require("nvchad.configs.lspconfig").capabilities
 
 local lspconfig = require "lspconfig"
-local servers = { "html", "cssls", "ruff", "gopls", "solidity", "solidity_ls", "prettier_d" }
+local servers = {
+  "html",
+  "cssls",
+  "ruff",
+  "gopls",
+  "solidity_ls_nomicfoundation",
+  "solidity",
+  "solidity_ls",
+}
 local util = require "lspconfig/util"
 
 -- lsps with default config
@@ -41,6 +49,16 @@ lspconfig.gopls.setup {
       -- staticcheck = true,
     },
   },
+}
+
+-- hardhat solidity
+lspconfig.solidity.setup {
+  capabilities = capabilities,
+  on_attach = on_attach,
+  cmd = { "nomicfoundation-solidity-language-server", "--stdio" },
+  filetypes = { "solidity" },
+  root_dir = lspconfig.util.find_git_ancestor,
+  single_file_support = true,
 }
 
 -- solidity

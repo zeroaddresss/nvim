@@ -127,6 +127,14 @@ return {
       dofile(vim.g.base46_cache .. "syntax")
       dofile(vim.g.base46_cache .. "treesitter")
       require("nvim-treesitter.configs").setup(opts)
+      -- require("nvim-treesitter.parsers").get_parser_configs().solidity = {
+      --   install_info = {
+      --     url = "https://github.com/JoranHonig/tree-sitter-solidity",
+      --     files = { "src/parser.c" },
+      --     requires_generate_from_grammar = true,
+      --   },
+      --   filetype = "solidity",
+      -- }
     end,
   },
 
