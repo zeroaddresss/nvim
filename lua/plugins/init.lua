@@ -550,38 +550,14 @@ return {
     "hrsh7th/cmp-cmdline",
     event = "CmdlineEnter",
     config = function()
-      local cmp = require "cmp"
-
-      local opts = {
-        ignore_cmds = { "Man", "!" },
-      }
-
-      cmp.setup.cmdline({ "/", "?" }, {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = {
-          { name = "buffer" },
-        },
+      local mappings = vim.tbl_extend("force", {}, require("cmp").mapping.preset.cmdline(), {
+        ["<CR>"] = { c = require("cmp").mapping.confirm { select = true } },
       })
-
-      cmp.setup.cmdline(":", {
-        mapping = cmp.mapping.preset.cmdline {
-          ["<C-y>"] = cmp.mapping.confirm { select = true },
-          ["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_next_item()
-            else
-              fallback()
-            end
-          end, { "i", "c" }),
-          ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_prev_item()
-            else
-              fallback()
-            end
-          end, { "i", "c" }),
+      require("cmp").setup.cmdline(":", {
+        mapping = mappings,
+        sources = {
+          { name = "cmdline" },
         },
-        sources = cmp.config.sources { { name = "cmdline", option = opts } },
       })
     end,
   },
