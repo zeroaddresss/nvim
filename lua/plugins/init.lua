@@ -72,56 +72,56 @@ return {
       fold = {
         enable = true,
       },
-      textobjects = {
-        select = {
-          enable = true,
-          lookahead = true,
-          keymaps = {
-            ["af"] = "@function.outer",
-            ["if"] = "@function.inner",
-            ["ac"] = "@class.outer",
-            ["ic"] = "@class.inner",
-          },
-        },
-        swap = {
-          enable = true,
-          swap_next = {
-            ["sp"] = "@parameter.inner",
-          },
-          swap_previous = {
-            ["sP"] = "@parameter.inner",
-          },
-        },
-        move = {
-          enable = true,
-          set_jumps = true,
-          goto_next_start = {
-            ["]m"] = "@function.outer",
-            ["]]"] = { query = "@class.outer", desc = "Next class start" },
-            ["]o"] = "@loop.*",
-            ["]s"] = { query = "@scope", query_group = "locals", desc = "Next scope" },
-            ["]z"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
-          },
-          goto_next_end = {
-            ["]M"] = "@function.outer",
-            ["]["] = "@class.outer",
-          },
-          goto_previous_start = {
-            ["[m"] = "@function.outer",
-            ["[["] = "@class.outer",
-          },
-          goto_previous_end = {
-            ["[M"] = "@function.outer",
-            ["[]"] = "@class.outer",
-          },
-          goto_next = {
-            ["]d"] = "@conditional.outer",
-          },
-          goto_previous = {
-            ["[d"] = "@conditional.outer",
-          },
-        },
-      },
+      --   textobjects = {
+      --     select = {
+      --       enable = true,
+      --       lookahead = true,
+      --       keymaps = {
+      --         ["af"] = "@function.outer",
+      --         ["if"] = "@function.inner",
+      --         ["ac"] = "@class.outer",
+      --         ["ic"] = "@class.inner",
+      --       },
+      --     },
+      --     swap = {
+      --       enable = true,
+      --       swap_next = {
+      --         ["sp"] = "@parameter.inner",
+      --       },
+      --       swap_previous = {
+      --         ["sP"] = "@parameter.inner",
+      --       },
+      --     },
+      --     move = {
+      --       enable = true,
+      --       set_jumps = true,
+      --       goto_next_start = {
+      --         ["]m"] = "@function.outer",
+      --         ["]]"] = { query = "@class.outer", desc = "Next class start" },
+      --         ["]o"] = "@loop.*",
+      --         ["]s"] = { query = "@scope", query_group = "locals", desc = "Next scope" },
+      --         ["]z"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
+      --       },
+      --       goto_next_end = {
+      --         ["]M"] = "@function.outer",
+      --         ["]["] = "@class.outer",
+      --       },
+      --       goto_previous_start = {
+      --         ["[m"] = "@function.outer",
+      --         ["[["] = "@class.outer",
+      --       },
+      --       goto_previous_end = {
+      --         ["[M"] = "@function.outer",
+      --         ["[]"] = "@class.outer",
+      --       },
+      --       goto_next = {
+      --         ["]d"] = "@conditional.outer",
+      --       },
+      --       goto_previous = {
+      --         ["[d"] = "@conditional.outer",
+      --       },
+      --     },
+      -- },
     },
     config = function(_, opts)
       dofile(vim.g.base46_cache .. "syntax")
@@ -563,12 +563,33 @@ return {
       })
 
       cmp.setup.cmdline(":", {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = cmp.config.sources(
-          { { name = "path" } }, -- doesn't seem to work?
-          { { name = "cmdline", option = opts } }
-        ),
+        mapping = cmp.mapping.preset.cmdline {
+          ["<C-y>"] = cmp.mapping.confirm { select = true },
+          ["<Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_next_item()
+            else
+              fallback()
+            end
+          end, { "i", "c" }),
+          ["<S-Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_prev_item()
+            else
+              fallback()
+            end
+          end, { "i", "c" }),
+        },
+        sources = cmp.config.sources { { name = "cmdline", option = opts } },
       })
+    end,
+  },
+  {
+    "hrsh7th/nvim-cmp",
+    opts = function()
+      local config = require "nvchad.configs.cmp"
+      config.mapping["<Tab>"] = nil
+      config.mapping["<S-Tab>"] = nil
     end,
   },
   {
@@ -583,15 +604,6 @@ return {
     lazy = false,
     init = function()
       vim.keymap.set("n", "<leader>to", "<cmd>Vista!!<cr>", { desc = "Vista | Toggle Overview" })
-    end,
-  },
-  {
-    "hrsh7th/nvim-cmp",
-    opts = function()
-      local config = require "nvchad.configs.cmp"
-      config.mapping["<Tab>"] = nil
-      config.mapping["<S-Tab>"] = nil
-      return config
     end,
   },
   {
@@ -721,5 +733,14 @@ return {
         desc = "Quickfix List (Trouble)",
       },
     },
+  },
+  {
+    "echasnovski/mini.ai",
+    event = "BufEnter",
+    version = "*",
+
+    config = function()
+      require("mini.ai").setup()
+    end,
   },
 }
