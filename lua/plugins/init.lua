@@ -72,56 +72,56 @@ return {
       fold = {
         enable = true,
       },
-      --   textobjects = {
-      --     select = {
-      --       enable = true,
-      --       lookahead = true,
-      --       keymaps = {
-      --         ["af"] = "@function.outer",
-      --         ["if"] = "@function.inner",
-      --         ["ac"] = "@class.outer",
-      --         ["ic"] = "@class.inner",
-      --       },
-      --     },
-      --     swap = {
-      --       enable = true,
-      --       swap_next = {
-      --         ["sp"] = "@parameter.inner",
-      --       },
-      --       swap_previous = {
-      --         ["sP"] = "@parameter.inner",
-      --       },
-      --     },
-      --     move = {
-      --       enable = true,
-      --       set_jumps = true,
-      --       goto_next_start = {
-      --         ["]m"] = "@function.outer",
-      --         ["]]"] = { query = "@class.outer", desc = "Next class start" },
-      --         ["]o"] = "@loop.*",
-      --         ["]s"] = { query = "@scope", query_group = "locals", desc = "Next scope" },
-      --         ["]z"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
-      --       },
-      --       goto_next_end = {
-      --         ["]M"] = "@function.outer",
-      --         ["]["] = "@class.outer",
-      --       },
-      --       goto_previous_start = {
-      --         ["[m"] = "@function.outer",
-      --         ["[["] = "@class.outer",
-      --       },
-      --       goto_previous_end = {
-      --         ["[M"] = "@function.outer",
-      --         ["[]"] = "@class.outer",
-      --       },
-      --       goto_next = {
-      --         ["]d"] = "@conditional.outer",
-      --       },
-      --       goto_previous = {
-      --         ["[d"] = "@conditional.outer",
-      --       },
-      --     },
-      -- },
+      textobjects = {
+        select = {
+          enable = true,
+          lookahead = true,
+          keymaps = {
+            ["af"] = "@function.outer",
+            ["if"] = "@function.inner",
+            ["ac"] = "@class.outer",
+            ["ic"] = "@class.inner",
+          },
+        },
+        swap = {
+          enable = true,
+          swap_next = {
+            ["sp"] = "@parameter.inner",
+          },
+          swap_previous = {
+            ["sP"] = "@parameter.inner",
+          },
+        },
+        move = {
+          enable = true,
+          set_jumps = true,
+          goto_next_start = {
+            ["]m"] = "@function.outer",
+            ["]]"] = { query = "@class.outer", desc = "Next class start" },
+            ["]o"] = "@loop.*",
+            ["]s"] = { query = "@scope", query_group = "locals", desc = "Next scope" },
+            ["]z"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
+          },
+          goto_next_end = {
+            ["]M"] = "@function.outer",
+            ["]["] = "@class.outer",
+          },
+          goto_previous_start = {
+            ["[m"] = "@function.outer",
+            ["[["] = "@class.outer",
+          },
+          goto_previous_end = {
+            ["[M"] = "@function.outer",
+            ["[]"] = "@class.outer",
+          },
+          goto_next = {
+            ["]d"] = "@conditional.outer",
+          },
+          goto_previous = {
+            ["[d"] = "@conditional.outer",
+          },
+        },
+      },
     },
     config = function(_, opts)
       dofile(vim.g.base46_cache .. "syntax")
@@ -530,6 +530,7 @@ return {
   },
   {
     "olexsmir/gopher.nvim",
+    event = "BufEnter",
     ft = "go",
     -- branch = "develop", -- if you want develop branch
     -- keep in mind, it might break everything
@@ -733,14 +734,5 @@ return {
         desc = "Quickfix List (Trouble)",
       },
     },
-  },
-  {
-    "echasnovski/mini.ai",
-    event = "BufEnter",
-    version = "*",
-
-    config = function()
-      require("mini.ai").setup()
-    end,
   },
 }
