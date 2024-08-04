@@ -504,13 +504,13 @@ return {
     event = "CmdlineEnter",
     config = true,
   },
-  -- {
-  --   "andweeb/presence.nvim",
-  --   lazy = false,
-  --   config = function()
-  --     require("presence").setup()
-  --   end,
-  -- },
+  {
+    "andweeb/presence.nvim",
+    lazy = false,
+    config = function()
+      require("presence").setup()
+    end,
+  },
   -- {
   --   "IogaMaster/neocord",
   --   event = "VeryLazy",
@@ -629,14 +629,58 @@ return {
     "folke/flash.nvim",
     event = "VeryLazy",
     ---@type Flash.Config
-    opts = {},
+    opts = {
+      char = {
+        enabled = false,
+        keys = {},
+      },
+    },
   -- stylua: ignore
+    char = {
+      enabled = false,
+      keys = {},
+    },
     keys = {
-      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-      { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-      { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+      {
+        "s",
+        mode = { "n", "x", "o" },
+        function()
+          require("flash").jump()
+        end,
+        desc = "Flash",
+      },
+      {
+        "S",
+        mode = { "n", "x", "o" },
+        function()
+          require("flash").treesitter()
+        end,
+        desc = "Flash Treesitter",
+      },
+      {
+        "r",
+        mode = "o",
+        function()
+          require("flash").remote()
+        end,
+        desc = "Remote Flash",
+      },
+      {
+        "R",
+        mode = { "o", "x" },
+        function()
+          require("flash").treesitter_search()
+        end,
+        desc = "Treesitter Search",
+      },
+      {
+        "<c-s>",
+        mode = { "c" },
+        function()
+          require("flash").toggle()
+        end,
+        desc = "Toggle Flash Search",
+      },
     },
   },
   {
@@ -646,7 +690,7 @@ return {
       require("oil").toggle_float "."
     end, { desc = "Open Explorer (Oil)" }),
     opts = {
-      default_file_explorer = true,
+      default_file_explorer = false,
       delete_to_trash = true,
       skip_confirm_for_simple_edits = true,
       view_options = {
@@ -711,4 +755,5 @@ return {
       },
     },
   },
+  { "wakatime/vim-wakatime", lazy = false },
 }
