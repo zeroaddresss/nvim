@@ -72,7 +72,7 @@ map("v", "c", '"ac', { desc = "Change and yank to register a" })
 map("v", "d", '"ad', { desc = "Delete and yank to register a" })
 map("n", "<leader>q", "<cmd>qa!<cr>", { desc = "quit", silent = true })
 map("n", "<leader>v", "<cmd>vsplit<cr>", { desc = "vsplit" })
-map("n", "<leader>h", "<cmd>split<cr>", { desc = "split" })
+-- map("n", "<leader>h", "<cmd>split<cr>", { desc = "split" })
 
 -- Indent backward
 map("n", "<", "<<", { desc = "General | Indent backward", silent = true })

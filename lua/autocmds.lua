@@ -40,9 +40,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
         "<leader>wr",
         "<leader>wl",
         "<leader>D",
-        "<leader>ra",
         "<leader>ca",
         "<leader>sh",
+        "<leader>ra",
         -- "<leader>ph",
         -- "<leader>rh",
       }

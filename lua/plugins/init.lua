@@ -685,7 +685,6 @@ return {
   },
   {
     "stevearc/oil.nvim",
-    lazy = false,
     vim.keymap.set("n", "<leader>e", function()
       require("oil").toggle_float "."
     end, { desc = "Open Explorer (Oil)" }),
@@ -724,36 +723,55 @@ return {
     cmd = "Trouble",
     keys = {
       {
-        "<leader>xx",
+        "<leader>lt",
         "<cmd>Trouble diagnostics toggle<cr>",
-        desc = "Diagnostics (Trouble)",
+        desc = "Toggle Diagnostics (Trouble)",
       },
       {
-        "<leader>xX",
+        "<leader>lb",
         "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
         desc = "Buffer Diagnostics (Trouble)",
       },
       {
-        "<leader>cs",
+        "<leader>lS",
         "<cmd>Trouble symbols toggle focus=false<cr>",
         desc = "Symbols (Trouble)",
       },
       {
-        "<leader>cl",
+        "<leader>lD",
         "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
         desc = "LSP Definitions / references / ... (Trouble)",
       },
       {
-        "<leader>xL",
+        "<leader>lL",
         "<cmd>Trouble loclist toggle<cr>",
         desc = "Location List (Trouble)",
       },
       {
-        "<leader>xQ",
+        "<leader>lq",
         "<cmd>Trouble qflist toggle<cr>",
         desc = "Quickfix List (Trouble)",
       },
     },
   },
   { "wakatime/vim-wakatime", lazy = false },
+  {
+    "jiaoshijie/undotree",
+    dependencies = "nvim-lua/plenary.nvim",
+    config = true,
+    keys = { -- load the plugin only when using it's keybinding:
+      { "<leader>u", "<cmd>lua require('undotree').toggle()<cr>", desc = "Toggle Undotree" },
+    },
+  },
+  {
+    "ahmedkhalf/project.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("project_nvim").setup()
+      require("telescope").load_extension "projects"
+      vim.keymap.set("n", "<leader>fp", function()
+        require("telescope").extensions.projects.projects {}
+      end, { desc = "Find Project" })
+    end,
+  },
 }
