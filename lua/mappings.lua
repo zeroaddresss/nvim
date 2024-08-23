@@ -20,8 +20,12 @@ nomap({ "n", "t" }, "<A-i>")
 
 -- whichkey
 nomap("n", "<leader>wK")
-
 nomap("n", "<leader>wk")
+
+-- aider defaults
+-- nomap({ "n", "i", "v" }, "<leader><space><space>")
+-- nomap({ "n" }, "<leader><space>3")
+-- nomap({ "n" }, "<leader><space>b")
 
 -- blankline
 nomap("n", "<leader>cc")
@@ -60,7 +64,9 @@ nomap("n", "<leader>ch")
 -- mappings
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC> <cmd> w <cr>")
+map({ "n", "i", "v" }, "<ESC>", "<ESC>", { desc = "Escape" })
 map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
+
 -- Better Down
 map("n", "j", "v:count == 0 ? 'gj' : 'j'", { desc = "General | Better Down", expr = true, silent = true })
 -- Better Up

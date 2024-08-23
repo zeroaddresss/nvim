@@ -163,9 +163,11 @@ return {
         -- { "<leader>b", group = "Buffer", icon = "" },
         { "<leader>t", group = "Terminal", icon = "" },
         { "<leader>n", group = "Neovim", icon = "" },
+        { "<leader>a", group = "AI", icon = "" },
       }
     end,
   },
+
   {
     "nvim-telescope/telescope.nvim",
     cmd = "Telescope",
@@ -191,6 +193,7 @@ return {
       }
     end,
   },
+
   {
     "L3MON4D3/LuaSnip",
     build = vim.fn.has "win32" ~= 0 and "make install_jsregexp" or nil,
@@ -221,6 +224,7 @@ return {
       require("luasnip").filetype_extend("sh", { "shelldoc" })
     end,
   },
+
   -- Codeium AI (both inline code completion and Chat)
   {
     "Exafunction/codeium.vim",
@@ -238,11 +242,11 @@ return {
         return vim.fn["codeium#Accept"]()
       end, { expr = true, silent = true })
 
-      vim.keymap.set("i", "<c-;>", function()
+      vim.keymap.set("i", "<c-]>", function()
         return vim.fn["codeium#CycleCompletions"](1)
       end, { expr = true, silent = true })
 
-      vim.keymap.set("i", "<c-'>", function()
+      vim.keymap.set("i", "<c-[>", function()
         return vim.fn["codeium#CycleCompletions"](-1)
       end, { expr = true, silent = true })
 
@@ -251,13 +255,11 @@ return {
       end, { expr = true, silent = true })
     end,
   },
-  -- lazy.nvim
+
   {
     "folke/noice.nvim",
     event = "VeryLazy",
-    opts = {
-      -- add any options here
-    },
+    opts = {},
     dependencies = {
       -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
       "MunifTanjim/nui.nvim",
@@ -266,26 +268,29 @@ return {
       --   If not available, we use `mini` as the fallback
       "rcarriga/nvim-notify",
     },
-    lsp = {
-      -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
-      override = {
-        ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-        ["vim.lsp.util.stylize_markdown"] = true,
-        ["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
+    require("noice").setup {
+      lsp = {
+        -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+        override = {
+          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+          ["vim.lsp.util.stylize_markdown"] = true,
+          ["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
+        },
+        signature = {
+          enabled = false,
+        },
       },
-      signature = {
-        enabled = false,
-      },
-    },
-    -- you can enable a preset for easier configuration
-    presets = {
-      bottom_search = true, -- use a classic bottom cmdline for search
-      command_palette = true, -- position the cmdline and popupmenu together
-      long_message_to_split = true, -- long messages will be sent to a split
-      inc_rename = false, -- enables an input dialog for inc-rename.nvim
-      lsp_doc_border = false, -- add a border to hover docs and signature help
+      -- you can enable a preset for easier configuration
+      -- presets = {
+      --   bottom_search = false, -- use a classic bottom cmdline for search
+      --   command_palette = true, -- position the cmdline and popupmenu together
+      --   long_message_to_split = true, -- long messages will be sent to a split
+      --   inc_rename = false, -- enables an input dialog for inc-rename.nvim
+      --   lsp_doc_border = false, -- add a border to hover docs and signature help
+      -- },
     },
   },
+
   {
     "rcarriga/nvim-notify",
     config = function()
@@ -299,6 +304,7 @@ return {
       }
     end,
   },
+
   {
     "folke/todo-comments.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
@@ -312,6 +318,7 @@ return {
       -- refer to the configuration section below
     },
   },
+
   {
     "kylechui/nvim-surround",
     version = "*", -- Use for stability; omit to use `main` branch for the latest features
@@ -322,6 +329,7 @@ return {
       }
     end,
   },
+
   {
     "stevearc/oil.nvim",
     opts = {},
@@ -339,6 +347,7 @@ return {
     end,
     ft = { "markdown" },
   },
+
   {
     "kdheepak/lazygit.nvim",
     cmd = {
@@ -358,6 +367,7 @@ return {
       { "<leader>gg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
     },
   },
+
   {
     "f-person/git-blame.nvim",
     init = function()
@@ -407,6 +417,7 @@ return {
     },
     opts = {},
   },
+
   {
     "akinsho/toggleterm.nvim",
     init = function()
@@ -480,11 +491,13 @@ return {
       },
     },
   },
+
   {
     "NStefan002/screenkey.nvim",
     lazy = false,
     version = "*", -- or branch = "dev", to use the latest commit
   },
+
   {
     "sindrets/diffview.nvim",
     init = function()
@@ -498,12 +511,14 @@ return {
     end,
     event = "User FilePost",
   },
+
   -- NOTE: Peek At Lines
   {
     "nacro90/numb.nvim",
     event = "CmdlineEnter",
     config = true,
   },
+
   {
     "andweeb/presence.nvim",
     lazy = false,
@@ -511,16 +526,7 @@ return {
       require("presence").setup()
     end,
   },
-  -- {
-  --   "IogaMaster/neocord",
-  --   event = "VeryLazy",
-  --   config = {
-  --     main_image = "logo",
-  --     logo = "https://raw.githubusercontent.com/github/explore/26674e638508ac4a4e113ee32d6755ebfa000569/topics/neovim/neovim.png",
-  --     show_time = true,
-  --     log_level = "debug",
-  --   },
-  -- },
+
   {
     "jose-elias-alvarez/null-ls.nvim",
     ft = { "go", "lua", "python" },
@@ -528,6 +534,7 @@ return {
       require "configs.null-ls"
     end,
   },
+
   {
     "olexsmir/gopher.nvim",
     event = "BufEnter",
@@ -546,6 +553,7 @@ return {
     -- @type gopher.Config
     opts = {},
   },
+
   {
     "hrsh7th/cmp-cmdline",
     event = "CmdlineEnter",
@@ -561,6 +569,7 @@ return {
       })
     end,
   },
+
   {
     "hrsh7th/nvim-cmp",
     opts = function()
@@ -569,6 +578,7 @@ return {
       config.mapping["<S-Tab>"] = nil
     end,
   },
+
   {
     "majutsushi/tagbar",
     keys = {
@@ -576,6 +586,7 @@ return {
       { "<leader>tc", "<cmd>TagbarClose<cr>", desc = "Toggle Close" },
     },
   },
+
   {
     "liuchengxu/vista.vim",
     lazy = false,
@@ -583,12 +594,14 @@ return {
       vim.keymap.set("n", "<leader>to", "<cmd>Vista!!<cr>", { desc = "Vista | Toggle Overview" })
     end,
   },
-  {
-    "m4xshen/hardtime.nvim",
-    dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
-    opts = {},
-    lazy = false,
-  },
+
+  -- {
+  --   "m4xshen/hardtime.nvim",
+  --   dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
+  --   opts = {},
+  --   lazy = false,
+  -- },
+
   {
     "pwntester/octo.nvim",
     lazy = false,
@@ -602,6 +615,7 @@ return {
       require("octo").setup()
     end,
   },
+
   {
     "lewis6991/gitsigns.nvim",
     opts = {
@@ -620,26 +634,31 @@ return {
       end,
     },
   },
+
   {
     "creativenull/efmls-configs-nvim",
     version = "v1.x.x", -- version is optional, but recommended
     dependencies = { "neovim/nvim-lspconfig" },
   },
+
   {
     "folke/flash.nvim",
     event = "VeryLazy",
     ---@type Flash.Config
     opts = {
-      char = {
-        enabled = false,
-        keys = {},
+      modes = {
+        char = {
+          enabled = false,
+          keys = {
+            { "t", mode = { "n", "x", "o" }, false },
+            { "T", mode = { "n", "x", "o" }, false },
+            { "f", mode = { "n", "x", "o" }, false },
+            { "F", mode = { "n", "x", "o" }, false },
+          },
+        },
       },
     },
   -- stylua: ignore
-    char = {
-      enabled = false,
-      keys = {},
-    },
     keys = {
       {
         "s",
@@ -683,6 +702,7 @@ return {
       },
     },
   },
+
   {
     "stevearc/oil.nvim",
     vim.keymap.set("n", "<leader>e", function()
@@ -717,6 +737,7 @@ return {
       require("oil").setup(opts)
     end,
   },
+
   {
     "folke/trouble.nvim",
     opts = {}, -- for default options, refer to the configuration section for custom setup.
@@ -754,7 +775,9 @@ return {
       },
     },
   },
+
   { "wakatime/vim-wakatime", lazy = false },
+
   {
     "jiaoshijie/undotree",
     dependencies = "nvim-lua/plenary.nvim",
@@ -763,6 +786,7 @@ return {
       { "<leader>u", "<cmd>lua require('undotree').toggle()<cr>", desc = "Toggle Undotree" },
     },
   },
+
   {
     "ahmedkhalf/project.nvim",
     event = "VeryLazy",
@@ -772,6 +796,228 @@ return {
       vim.keymap.set("n", "<leader>fp", function()
         require("telescope").extensions.projects.projects {}
       end, { desc = "Find Project" })
+    end,
+  },
+
+  {
+    "joshuavial/aider.nvim",
+    -- event = "VeryLazy",
+    lazy = false,
+    opts = {
+      default_bindings = false,
+    },
+    keys = function()
+      return {
+        {
+          "<leader>ao",
+          "<cmd>lua AiderOpen('--env-file $HOME/.aider.env', 'hsplit')<cr>i",
+          -- "<cmd>lua AiderOpen()<cr>i",
+          desc = "Aider Open",
+        },
+        {
+          "<leader>ab",
+          "<cmd>lua AiderBackground('--env-file $HOME/.aider.env')<cr>",
+          desc = "Aider Background",
+          -- defaults to message "Complete as many todo items as you can and remove the comment for any item you complete."
+        },
+      }
+    end,
+  },
+
+  {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    lazy = false,
+    branch = "canary",
+    dependencies = {
+      { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
+      { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+    },
+    vim.keymap.set({ "n", "v" }, "<leader>ac", function()
+      local chat = require "CopilotChat"
+      chat.toggle()
+    end, { desc = "CopilotChat Toggle" }),
+
+    vim.keymap.set({ "n", "v" }, "<leader>ax", function()
+      local chat = require "CopilotChat"
+      chat.reset()
+    end, { desc = "CopilotChat Reset" }),
+
+    -- Quick chat with Copilot
+    vim.keymap.set({ "n", "v" }, "<leader>aq", function()
+      local input = vim.fn.input "Quick Chat: "
+      if input ~= "" then
+        require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
+      end
+    end, { desc = "CopilotChat - Quick chat" }),
+
+    vim.keymap.set("n", "<leader>ah", function()
+      local actions = require "CopilotChat.actions"
+      require("CopilotChat.integrations.telescope").pick(actions.help_actions())
+    end, { desc = "CopilotChat - Help actions" }),
+
+    vim.keymap.set("n", "<leader>aA", function()
+      local actions = require "CopilotChat.actions"
+      require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
+    end, { desc = "CopilotChat - Prompt actions" }),
+
+    opts = {
+      debug = true, -- Enable debugging
+      prompts = {
+        -- Code related prompts
+        Explain = {
+          prompt = "Please explain how the following code works.",
+          mapping = "<leader>aE",
+          description = "CopilotChat Explain Code",
+        },
+        Review = {
+          prompt = "Please review the following code and provide suggestions for improvement.",
+          mapping = "<leader>aR",
+          description = "CopilotChat Review Code",
+        },
+
+        Tests = {
+          prompt = "Please provide unit tests for the following code.",
+          mapping = "<leader>at",
+          description = "CopilotChat Test Code",
+        },
+
+        Refactor = {
+          prompt = "Please refactor the following code to improve its clarity and readability.",
+          mapping = "<leader>aR",
+          description = "CopilotChat Refactor Code",
+        },
+
+        FixCode = {
+          prompt = "Please fix the following code to make it work as intended.",
+          mapping = "<leader>af",
+          description = "CopilotChat Fix Code",
+        },
+
+        FixError = {
+          prompt = "Please explain the error in the following text and provide a solution.",
+          mapping = "<leader>aF",
+          description = "CopilotChat Fix Error",
+        },
+
+        BetterNamings = {
+          prompt = "Please provide better names for the following variables and functions.",
+          mapping = "<leader>an",
+          description = "CopilotChat Better Namings",
+        },
+
+        Documentation = {
+          prompt = "Please provide documentation for the following code.",
+          mapping = "<leader>ad",
+          description = "CopilotChat Generate Documentation",
+        },
+
+        -- Text related prompts
+        Summarize = "Please summarize the following text.",
+        Spelling = "Please correct any grammar and spelling errors in the following text.",
+        Wording = "Please improve the grammar and wording of the following text.",
+        Concise = "Please rewrite the following text to make it more concise.",
+
+        -- Custom prompts
+        MyCustomPrompt = {
+          prompt = "/MyCustomPrompt Include some additional context.",
+        },
+      },
+
+      -- nvim-cmp integration
+      -- Registers copilot-chat source and enables it for copilot-chat filetype (so copilot chat window)
+      -- require("CopilotChat.integrations.cmp").setup(),
+
+      mappings = {
+        complete = {
+          insert = "",
+        },
+      },
+
+      -- See Configuration section for rest
+    },
+    -- See Commands section for default commands if you want to lazy load on them
+  },
+
+  {
+    "shortcuts/no-neck-pain.nvim",
+    lazy = false,
+    version = "*",
+    config = function()
+      require("no-neck-pain").setup {}
+    end,
+  },
+
+  {
+    "yetone/avante.nvim",
+    event = "VeryLazy",
+    endpoint = "https://api.deepseek.com",
+    build = "make",
+    opts = {
+      provider = "deepseek",
+      vendors = {
+        ---@type AvanteProvider
+        deepseek = {
+          endpoint = "https://api.deepseek.com",
+          model = "deepseek-coder",
+          api_key_name = "DEEPSEEK_API_KEY",
+          parse_curl_args = function(opts, code_opts)
+            return {
+              url = opts.endpoint,
+              headers = {
+                ["Accept"] = "application/json",
+                ["Content-Type"] = "application/json",
+                ["Authorization"] = "Bearer " .. os.getenv(opts.api_key_name),
+              },
+              body = {
+                model = opts.model,
+                messages = require("avante.providers").openai.parse_message(code_opts), -- you can make your own message, but this is very advanced
+                temperature = 0,
+                max_tokens = 4096,
+                stream = true, -- this will be set by default.
+              },
+            }
+          end,
+          parse_response_data = function(data_stream, event_state, opts)
+            require("avante.providers").openai.parse_response(data_stream, event_state, opts)
+          end,
+        },
+      },
+    },
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+      "stevearc/dressing.nvim",
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      --- The below is optional, make sure to setup it properly if you have lazy=true
+      {
+        "MeanderingProgrammer/render-markdown.nvim",
+        opts = {
+          file_types = { "markdown", "Avante" },
+        },
+        ft = { "markdown", "Avante" },
+      },
+    },
+  },
+
+  {
+    "supermaven-inc/supermaven-nvim",
+    event = "VeryLazy",
+    config = function()
+      require("supermaven-nvim").setup {
+        keymaps = {
+          accept_suggestion = "<Tab>",
+          clear_suggestion = "<C-x>",
+          accept_word = "<CR>",
+        },
+        ignore_filetypes = {},
+        color = {
+          suggestion_color = "#ffffff",
+          cterm = 244,
+        },
+        log_level = "info", -- set to "off" to disable logging completely
+        disable_inline_completion = false, -- disables inline completion for use with cmp
+        disable_keymaps = false, -- disables built in keymaps for more manual control
+      }
     end,
   },
 }
