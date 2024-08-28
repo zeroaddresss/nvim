@@ -64,7 +64,8 @@ nomap("n", "<leader>ch")
 -- mappings
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC> <cmd> w <cr>")
-map({ "n", "i", "v" }, "<ESC>", "<ESC>", { desc = "Escape" })
+map({ "i", "v" }, "<ESC>", "<ESC>", { desc = "Escape" })
+map("n", "<ESC>", "<cmd>nohlsearch<cr>", { desc = "Escape to clear search highlight" })
 map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
 
 -- Better Down

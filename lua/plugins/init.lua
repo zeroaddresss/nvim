@@ -7,10 +7,10 @@ return {
     end,
   },
 
-  {
-    "github/copilot.vim",
-    cmd = "Copilot",
-  },
+  -- {
+  --   "github/copilot.vim",
+  --   cmd = "Copilot",
+  -- },
 
   -- These are some examples, uncomment them if you want to see them work!
   {
@@ -175,6 +175,8 @@ return {
       local actions = require "telescope.actions"
       require("telescope").setup {
         defaults = {
+          file_ignore_patterns = { ".git", ".DS_Store", "node_modules" },
+          hidden = true,
           mappings = {
             i = {
               ["<C-j>"] = actions.move_selection_next,
@@ -226,68 +228,58 @@ return {
   },
 
   -- Codeium AI (both inline code completion and Chat)
-  {
-    "Exafunction/codeium.vim",
-    event = "BufEnter",
-    config = function()
-      vim.keymap.set("i", "<C-,>", function()
-        return vim.fn["codeium#Complete"]()
-      end, { expr = true, silent = true })
-
-      vim.keymap.set("i", "<C-i>", function()
-        return vim.fn["codeium#Chat"]()
-      end, { expr = true, silent = true })
-
-      vim.keymap.set("i", "<C-g>", function()
-        return vim.fn["codeium#Accept"]()
-      end, { expr = true, silent = true })
-
-      vim.keymap.set("i", "<c-]>", function()
-        return vim.fn["codeium#CycleCompletions"](1)
-      end, { expr = true, silent = true })
-
-      vim.keymap.set("i", "<c-[>", function()
-        return vim.fn["codeium#CycleCompletions"](-1)
-      end, { expr = true, silent = true })
-
-      vim.keymap.set("i", "<c-x>", function()
-        return vim.fn["codeium#Clear"]()
-      end, { expr = true, silent = true })
-    end,
-  },
+  -- {
+  --   "Exafunction/codeium.vim",
+  --   event = "BufEnter",
+  --   config = function()
+  --     vim.keymap.set("i", "<C-,>", function()
+  --       return vim.fn["codeium#Complete"]()
+  --     end, { expr = true, silent = true })
+  --
+  --     vim.keymap.set("i", "<C-i>", function()
+  --       return vim.fn["codeium#Chat"]()
+  --     end, { expr = true, silent = true })
+  --
+  --     vim.keymap.set("i", "<C-g>", function()
+  --       return vim.fn["codeium#Accept"]()
+  --     end, { expr = true, silent = true })
+  --
+  --     vim.keymap.set("i", "<c-]>", function()
+  --       return vim.fn["codeium#CycleCompletions"](1)
+  --     end, { expr = true, silent = true })
+  --
+  --     vim.keymap.set("i", "<c-[>", function()
+  --       return vim.fn["codeium#CycleCompletions"](-1)
+  --     end, { expr = true, silent = true })
+  --
+  --     vim.keymap.set("i", "<c-x>", function()
+  --       return vim.fn["codeium#Clear"]()
+  --     end, { expr = true, silent = true })
+  --   end,
+  -- },
 
   {
     "folke/noice.nvim",
     event = "VeryLazy",
-    opts = {},
-    dependencies = {
-      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-      "MunifTanjim/nui.nvim",
-      -- OPTIONAL:
-      --   `nvim-notify` is only needed, if you want to use the notification view.
-      --   If not available, we use `mini` as the fallback
-      "rcarriga/nvim-notify",
-    },
-    require("noice").setup {
+    opts = {
       lsp = {
-        -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+        signature = {
+          enabled = false,
+        },
         override = {
           ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
           ["vim.lsp.util.stylize_markdown"] = true,
           ["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
         },
-        signature = {
-          enabled = false,
-        },
       },
-      -- you can enable a preset for easier configuration
-      -- presets = {
-      --   bottom_search = false, -- use a classic bottom cmdline for search
-      --   command_palette = true, -- position the cmdline and popupmenu together
-      --   long_message_to_split = true, -- long messages will be sent to a split
-      --   inc_rename = false, -- enables an input dialog for inc-rename.nvim
-      --   lsp_doc_border = false, -- add a border to hover docs and signature help
-      -- },
+      dependencies = {
+        -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+        "MunifTanjim/nui.nvim",
+        -- OPTIONAL:
+        --   `nvim-notify` is only needed, if you want to use the notification view.
+        --   If not available, we use `mini` as the fallback
+        "rcarriga/nvim-notify",
+      },
     },
   },
 
@@ -326,12 +318,16 @@ return {
     config = function()
       require("nvim-surround").setup {
         -- Configuration here, or leave empty to use defaults
+        --NOTE: Usage: https://github.com/kylechui/nvim-surround?tab=readme-ov-file#rocket-usage
       }
     end,
   },
 
   {
+    --NOTE: "I" to toggle hidden files in nvim-tree
+    -- Oil recipes for hidden files: https://github.com/stevearc/oil.nvim/blob/master/doc/recipes.md#toggle-file-detail-view
     "stevearc/oil.nvim",
+    lazy = false,
     opts = {},
     -- Optional dependencies
     dependencies = { { "echasnovski/mini.icons", opts = {} } },
@@ -576,6 +572,13 @@ return {
       local config = require "nvchad.configs.cmp"
       config.mapping["<Tab>"] = nil
       config.mapping["<S-Tab>"] = nil
+      config.performance = {
+        debounce = 0,
+        throttle = 0,
+      }
+      config.sources = {
+        { name = "supermaven" },
+      }
     end,
   },
 
@@ -824,119 +827,119 @@ return {
     end,
   },
 
-  {
-    "CopilotC-Nvim/CopilotChat.nvim",
-    lazy = false,
-    branch = "canary",
-    dependencies = {
-      { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
-      { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
-    },
-    vim.keymap.set({ "n", "v" }, "<leader>ac", function()
-      local chat = require "CopilotChat"
-      chat.toggle()
-    end, { desc = "CopilotChat Toggle" }),
-
-    vim.keymap.set({ "n", "v" }, "<leader>ax", function()
-      local chat = require "CopilotChat"
-      chat.reset()
-    end, { desc = "CopilotChat Reset" }),
-
-    -- Quick chat with Copilot
-    vim.keymap.set({ "n", "v" }, "<leader>aq", function()
-      local input = vim.fn.input "Quick Chat: "
-      if input ~= "" then
-        require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
-      end
-    end, { desc = "CopilotChat - Quick chat" }),
-
-    vim.keymap.set("n", "<leader>ah", function()
-      local actions = require "CopilotChat.actions"
-      require("CopilotChat.integrations.telescope").pick(actions.help_actions())
-    end, { desc = "CopilotChat - Help actions" }),
-
-    vim.keymap.set("n", "<leader>aA", function()
-      local actions = require "CopilotChat.actions"
-      require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
-    end, { desc = "CopilotChat - Prompt actions" }),
-
-    opts = {
-      debug = true, -- Enable debugging
-      prompts = {
-        -- Code related prompts
-        Explain = {
-          prompt = "Please explain how the following code works.",
-          mapping = "<leader>aE",
-          description = "CopilotChat Explain Code",
-        },
-        Review = {
-          prompt = "Please review the following code and provide suggestions for improvement.",
-          mapping = "<leader>aR",
-          description = "CopilotChat Review Code",
-        },
-
-        Tests = {
-          prompt = "Please provide unit tests for the following code.",
-          mapping = "<leader>at",
-          description = "CopilotChat Test Code",
-        },
-
-        Refactor = {
-          prompt = "Please refactor the following code to improve its clarity and readability.",
-          mapping = "<leader>aR",
-          description = "CopilotChat Refactor Code",
-        },
-
-        FixCode = {
-          prompt = "Please fix the following code to make it work as intended.",
-          mapping = "<leader>af",
-          description = "CopilotChat Fix Code",
-        },
-
-        FixError = {
-          prompt = "Please explain the error in the following text and provide a solution.",
-          mapping = "<leader>aF",
-          description = "CopilotChat Fix Error",
-        },
-
-        BetterNamings = {
-          prompt = "Please provide better names for the following variables and functions.",
-          mapping = "<leader>an",
-          description = "CopilotChat Better Namings",
-        },
-
-        Documentation = {
-          prompt = "Please provide documentation for the following code.",
-          mapping = "<leader>ad",
-          description = "CopilotChat Generate Documentation",
-        },
-
-        -- Text related prompts
-        Summarize = "Please summarize the following text.",
-        Spelling = "Please correct any grammar and spelling errors in the following text.",
-        Wording = "Please improve the grammar and wording of the following text.",
-        Concise = "Please rewrite the following text to make it more concise.",
-
-        -- Custom prompts
-        MyCustomPrompt = {
-          prompt = "/MyCustomPrompt Include some additional context.",
-        },
-      },
-
-      -- nvim-cmp integration
-      -- Registers copilot-chat source and enables it for copilot-chat filetype (so copilot chat window)
-      -- require("CopilotChat.integrations.cmp").setup(),
-
-      mappings = {
-        complete = {
-          insert = "",
-        },
-      },
-
-      -- See Configuration section for rest
-    },
-    -- See Commands section for default commands if you want to lazy load on them
-  },
+  -- {
+  --   "CopilotC-Nvim/CopilotChat.nvim",
+  --   lazy = false,
+  --   branch = "canary",
+  --   dependencies = {
+  --     { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
+  --     { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+  --   },
+  --   vim.keymap.set({ "n", "v" }, "<leader>ac", function()
+  --     local chat = require "CopilotChat"
+  --     chat.toggle()
+  --   end, { desc = "CopilotChat Toggle" }),
+  --
+  --   vim.keymap.set({ "n", "v" }, "<leader>ax", function()
+  --     local chat = require "CopilotChat"
+  --     chat.reset()
+  --   end, { desc = "CopilotChat Reset" }),
+  --
+  --   -- Quick chat with Copilot
+  --   vim.keymap.set({ "n", "v" }, "<leader>aq", function()
+  --     local input = vim.fn.input "Quick Chat: "
+  --     if input ~= "" then
+  --       require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
+  --     end
+  --   end, { desc = "CopilotChat - Quick chat" }),
+  --
+  --   vim.keymap.set("n", "<leader>ah", function()
+  --     local actions = require "CopilotChat.actions"
+  --     require("CopilotChat.integrations.telescope").pick(actions.help_actions())
+  --   end, { desc = "CopilotChat - Help actions" }),
+  --
+  --   vim.keymap.set("n", "<leader>aA", function()
+  --     local actions = require "CopilotChat.actions"
+  --     require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
+  --   end, { desc = "CopilotChat - Prompt actions" }),
+  --
+  --   opts = {
+  --     debug = true, -- Enable debugging
+  --     prompts = {
+  --       -- Code related prompts
+  --       Explain = {
+  --         prompt = "Please explain how the following code works.",
+  --         mapping = "<leader>aE",
+  --         description = "CopilotChat Explain Code",
+  --       },
+  --       Review = {
+  --         prompt = "Please review the following code and provide suggestions for improvement.",
+  --         mapping = "<leader>aR",
+  --         description = "CopilotChat Review Code",
+  --       },
+  --
+  --       Tests = {
+  --         prompt = "Please provide unit tests for the following code.",
+  --         mapping = "<leader>at",
+  --         description = "CopilotChat Test Code",
+  --       },
+  --
+  --       Refactor = {
+  --         prompt = "Please refactor the following code to improve its clarity and readability.",
+  --         mapping = "<leader>aR",
+  --         description = "CopilotChat Refactor Code",
+  --       },
+  --
+  --       FixCode = {
+  --         prompt = "Please fix the following code to make it work as intended.",
+  --         mapping = "<leader>af",
+  --         description = "CopilotChat Fix Code",
+  --       },
+  --
+  --       FixError = {
+  --         prompt = "Please explain the error in the following text and provide a solution.",
+  --         mapping = "<leader>aF",
+  --         description = "CopilotChat Fix Error",
+  --       },
+  --
+  --       BetterNamings = {
+  --         prompt = "Please provide better names for the following variables and functions.",
+  --         mapping = "<leader>an",
+  --         description = "CopilotChat Better Namings",
+  --       },
+  --
+  --       Documentation = {
+  --         prompt = "Please provide documentation for the following code.",
+  --         mapping = "<leader>ad",
+  --         description = "CopilotChat Generate Documentation",
+  --       },
+  --
+  --       -- Text related prompts
+  --       Summarize = "Please summarize the following text.",
+  --       Spelling = "Please correct any grammar and spelling errors in the following text.",
+  --       Wording = "Please improve the grammar and wording of the following text.",
+  --       Concise = "Please rewrite the following text to make it more concise.",
+  --
+  --       -- Custom prompts
+  --       MyCustomPrompt = {
+  --         prompt = "/MyCustomPrompt Include some additional context.",
+  --       },
+  --     },
+  --
+  --     -- nvim-cmp integration
+  --     -- Registers copilot-chat source and enables it for copilot-chat filetype (so copilot chat window)
+  --     -- require("CopilotChat.integrations.cmp").setup(),
+  --
+  --     mappings = {
+  --       complete = {
+  --         insert = "",
+  --       },
+  --     },
+  --
+  --     -- See Configuration section for rest
+  --   },
+  --   -- See Commands section for default commands if you want to lazy load on them
+  -- },
 
   {
     "shortcuts/no-neck-pain.nvim",
@@ -950,14 +953,14 @@ return {
   {
     "yetone/avante.nvim",
     event = "VeryLazy",
-    endpoint = "https://api.deepseek.com",
+    endpoint = "https://api.deepseek.com/beta/chat/completions",
     build = "make",
     opts = {
       provider = "deepseek",
       vendors = {
         ---@type AvanteProvider
         deepseek = {
-          endpoint = "https://api.deepseek.com",
+          endpoint = "https://api.deepseek.com/beta/chat/completions",
           model = "deepseek-coder",
           api_key_name = "DEEPSEEK_API_KEY",
           parse_curl_args = function(opts, code_opts)
@@ -972,7 +975,7 @@ return {
                 model = opts.model,
                 messages = require("avante.providers").openai.parse_message(code_opts), -- you can make your own message, but this is very advanced
                 temperature = 0,
-                max_tokens = 4096,
+                max_tokens = 8192,
                 stream = true, -- this will be set by default.
               },
             }
@@ -1007,7 +1010,7 @@ return {
         keymaps = {
           accept_suggestion = "<Tab>",
           clear_suggestion = "<C-x>",
-          accept_word = "<CR>",
+          accept_word = "<C-j>", -- accept partial suggestion (word only)
         },
         ignore_filetypes = {},
         color = {
@@ -1018,6 +1021,61 @@ return {
         disable_inline_completion = false, -- disables inline completion for use with cmp
         disable_keymaps = false, -- disables built in keymaps for more manual control
       }
+    end,
+  },
+
+  -- {
+  --   "olimorris/codecompanion.nvim",
+  --   -- event = "VeryLazy",
+  --   dependencies = {
+  --     "nvim-lua/plenary.nvim",
+  --     "nvim-treesitter/nvim-treesitter",
+  --     "nvim-telescope/telescope.nvim", -- Optional
+  --     {
+  --       "stevearc/dressing.nvim", -- Optional: Improves the default Neovim UI
+  --       opts = {},
+  --     },
+  --   },
+  --   adapters = {
+  --     deepseek = require("codecompanion.adapters").extend("openai", {
+  --       env = {
+  --         api_key = "cmd:gpg --decrypt ~/.deepseek-api-key.gpg 2>/dev/null",
+  --       },
+  --       url = "https://api.deepseek.com/beta/chat/completions",
+  --       schema = {
+  --         model = {
+  --           default = "deepseek-coder",
+  --           choices = {
+  --             "deepseek-coder",
+  --             -- "deepseek-chat",
+  --           },
+  --         },
+  --         max_token = {
+  --           default = 8192,
+  --         },
+  --         temperature = {
+  --           default = 0,
+  --         },
+  --       },
+  --     }),
+  --   },
+  -- },
+
+  {
+    "AckslD/nvim-neoclip.lua",
+    event = "VeryLazy",
+    dependencies = {
+      { "kkharji/sqlite.lua", module = "sqlite" },
+      { "nvim-telescope/telescope.nvim" },
+      -- {'ibhagwan/fzf-lua'},
+    },
+    config = function()
+      require("neoclip").setup {
+        history = 100,
+        enable_persistent_history = true,
+        keys = { telescope = { i = { select = "<c-y>", paste = "<cr>" } } },
+      }
+      vim.keymap.set({ "n", "v" }, "<leader>np", "<cmd>Telescope neoclip<cr>", { desc = "Neoclip | Paste" })
     end,
   },
 }
