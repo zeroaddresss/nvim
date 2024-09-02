@@ -228,35 +228,35 @@ return {
   },
 
   -- Codeium AI (both inline code completion and Chat)
-  -- {
-  --   "Exafunction/codeium.vim",
-  --   event = "BufEnter",
-  --   config = function()
-  --     vim.keymap.set("i", "<C-,>", function()
-  --       return vim.fn["codeium#Complete"]()
-  --     end, { expr = true, silent = true })
-  --
-  --     vim.keymap.set("i", "<C-i>", function()
-  --       return vim.fn["codeium#Chat"]()
-  --     end, { expr = true, silent = true })
-  --
-  --     vim.keymap.set("i", "<C-g>", function()
-  --       return vim.fn["codeium#Accept"]()
-  --     end, { expr = true, silent = true })
-  --
-  --     vim.keymap.set("i", "<c-]>", function()
-  --       return vim.fn["codeium#CycleCompletions"](1)
-  --     end, { expr = true, silent = true })
-  --
-  --     vim.keymap.set("i", "<c-[>", function()
-  --       return vim.fn["codeium#CycleCompletions"](-1)
-  --     end, { expr = true, silent = true })
-  --
-  --     vim.keymap.set("i", "<c-x>", function()
-  --       return vim.fn["codeium#Clear"]()
-  --     end, { expr = true, silent = true })
-  --   end,
-  -- },
+  {
+    "Exafunction/codeium.vim",
+    event = "BufEnter",
+    config = function()
+      vim.keymap.set("i", "<C-,>", function()
+        return vim.fn["codeium#Complete"]()
+      end, { expr = true, silent = true })
+
+      vim.keymap.set("i", "<C-i>", function()
+        return vim.fn["codeium#Chat"]()
+      end, { expr = true, silent = true })
+
+      vim.keymap.set("i", "<C-g>", function()
+        return vim.fn["codeium#Accept"]()
+      end, { expr = true, silent = true })
+
+      vim.keymap.set("i", "<c-]>", function()
+        return vim.fn["codeium#CycleCompletions"](1)
+      end, { expr = true, silent = true })
+
+      vim.keymap.set("i", "<c-[>", function()
+        return vim.fn["codeium#CycleCompletions"](-1)
+      end, { expr = true, silent = true })
+
+      vim.keymap.set("i", "<c-x>", function()
+        return vim.fn["codeium#Clear"]()
+      end, { expr = true, silent = true })
+    end,
+  },
 
   {
     "folke/noice.nvim",
@@ -576,9 +576,9 @@ return {
         debounce = 0,
         throttle = 0,
       }
-      config.sources = {
-        { name = "supermaven" },
-      }
+      -- config.sources = {
+      --   { name = "supermaven" },
+      -- }
     end,
   },
 
@@ -956,6 +956,7 @@ return {
     endpoint = "https://api.deepseek.com/beta/chat/completions",
     build = "make",
     opts = {
+      default_bindings = false,
       provider = "deepseek",
       vendors = {
         ---@type AvanteProvider
@@ -1002,27 +1003,27 @@ return {
     },
   },
 
-  {
-    "supermaven-inc/supermaven-nvim",
-    event = "VeryLazy",
-    config = function()
-      require("supermaven-nvim").setup {
-        keymaps = {
-          accept_suggestion = "<Tab>",
-          clear_suggestion = "<C-x>",
-          accept_word = "<C-j>", -- accept partial suggestion (word only)
-        },
-        ignore_filetypes = {},
-        color = {
-          suggestion_color = "#ffffff",
-          cterm = 244,
-        },
-        log_level = "info", -- set to "off" to disable logging completely
-        disable_inline_completion = false, -- disables inline completion for use with cmp
-        disable_keymaps = false, -- disables built in keymaps for more manual control
-      }
-    end,
-  },
+  -- {
+  --   "supermaven-inc/supermaven-nvim",
+  --   event = "VeryLazy",
+  --   config = function()
+  --     require("supermaven-nvim").setup {
+  --       keymaps = {
+  --         accept_suggestion = "<Tab>",
+  --         clear_suggestion = "<C-x>",
+  --         accept_word = "<C-j>", -- accept partial suggestion (word only)
+  --       },
+  --       ignore_filetypes = {},
+  --       color = {
+  --         suggestion_color = "#ffffff",
+  --         cterm = 244,
+  --       },
+  --       log_level = "info", -- set to "off" to disable logging completely
+  --       disable_inline_completion = false, -- disables inline completion for use with cmp
+  --       disable_keymaps = false, -- disables built in keymaps for more manual control
+  --     }
+  --   end,
+  -- },
 
   -- {
   --   "olimorris/codecompanion.nvim",
