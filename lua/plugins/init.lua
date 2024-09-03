@@ -7,10 +7,10 @@ return {
     end,
   },
 
-  -- {
-  --   "github/copilot.vim",
-  --   cmd = "Copilot",
-  -- },
+  {
+    "github/copilot.vim",
+    cmd = "Copilot",
+  },
 
   -- These are some examples, uncomment them if you want to see them work!
   {
@@ -228,35 +228,35 @@ return {
   },
 
   -- Codeium AI (both inline code completion and Chat)
-  {
-    "Exafunction/codeium.vim",
-    event = "BufEnter",
-    config = function()
-      vim.keymap.set("i", "<C-,>", function()
-        return vim.fn["codeium#Complete"]()
-      end, { expr = true, silent = true })
-
-      vim.keymap.set("i", "<C-i>", function()
-        return vim.fn["codeium#Chat"]()
-      end, { expr = true, silent = true })
-
-      vim.keymap.set("i", "<C-g>", function()
-        return vim.fn["codeium#Accept"]()
-      end, { expr = true, silent = true })
-
-      vim.keymap.set("i", "<c-]>", function()
-        return vim.fn["codeium#CycleCompletions"](1)
-      end, { expr = true, silent = true })
-
-      vim.keymap.set("i", "<c-[>", function()
-        return vim.fn["codeium#CycleCompletions"](-1)
-      end, { expr = true, silent = true })
-
-      vim.keymap.set("i", "<c-x>", function()
-        return vim.fn["codeium#Clear"]()
-      end, { expr = true, silent = true })
-    end,
-  },
+  -- {
+  --   "Exafunction/codeium.vim",
+  --   event = "BufEnter",
+  --   config = function()
+  --     vim.keymap.set("i", "<C-,>", function()
+  --       return vim.fn["codeium#Complete"]()
+  --     end, { expr = true, silent = true })
+  --
+  --     vim.keymap.set("i", "<C-i>", function()
+  --       return vim.fn["codeium#Chat"]()
+  --     end, { expr = true, silent = true })
+  --
+  --     vim.keymap.set("i", "<C-g>", function()
+  --       return vim.fn["codeium#Accept"]()
+  --     end, { expr = true, silent = true })
+  --
+  --     vim.keymap.set("i", "<c-]>", function()
+  --       return vim.fn["codeium#CycleCompletions"](1)
+  --     end, { expr = true, silent = true })
+  --
+  --     vim.keymap.set("i", "<c-[>", function()
+  --       return vim.fn["codeium#CycleCompletions"](-1)
+  --     end, { expr = true, silent = true })
+  --
+  --     vim.keymap.set("i", "<c-x>", function()
+  --       return vim.fn["codeium#Clear"]()
+  --     end, { expr = true, silent = true })
+  --   end,
+  -- },
 
   {
     "folke/noice.nvim",
