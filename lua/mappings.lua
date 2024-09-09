@@ -13,19 +13,9 @@ map("t", "<C-x>", "<C-\\><C-N>", { desc = "terminal escape terminal mode" })
 nomap("n", "<leader>h")
 nomap("n", "<leader>v")
 
--- toggleable
-nomap({ "n", "t" }, "<A-v>")
-nomap({ "n", "t" }, "<A-h>")
-nomap({ "n", "t" }, "<A-i>")
-
 -- whichkey
 nomap("n", "<leader>wK")
 nomap("n", "<leader>wk")
-
--- aider defaults
--- nomap({ "n", "i", "v" }, "<leader><space><space>")
--- nomap({ "n" }, "<leader><space>3")
--- nomap({ "n" }, "<leader><space>b")
 
 -- blankline
 nomap("n", "<leader>cc")
@@ -196,3 +186,32 @@ map("n", "<leader>ng", function()
     cwd = cwd,
   }
 end, { desc = "Neovim | Grep Config Files", silent = true })
+
+-- new terminals
+map("n", "<leader>h", function()
+  require("nvchad.term").new { pos = "sp" }
+end, { desc = "terminal new horizontal term" })
+
+map("n", "<leader>v", function()
+  require("nvchad.term").new { pos = "vsp" }
+end, { desc = "terminal new vertical window" })
+
+-- toggleable
+map({ "n", "t" }, "<A-v>", function()
+  require("nvchad.term").toggle { pos = "vsp", id = "vtoggleTerm" }
+end, { desc = "terminal toggleable vertical term" })
+
+map({ "n", "t" }, "<A-h>", function()
+  require("nvchad.term").toggle { pos = "sp", id = "htoggleTerm" }
+end, { desc = "terminal new horizontal term" })
+
+map({ "n", "t" }, "<A-i>", function()
+  require("nvchad.term").toggle { pos = "float", id = "floatTerm" }
+end, { desc = "terminal toggle floating term" })
+
+-- whichkey
+map("n", "<leader>nw", "<cmd>WhichKey <CR>", { desc = "whichkey all keymaps" })
+
+map("n", "<leader>nW", function()
+  vim.cmd("WhichKey " .. vim.fn.input "WhichKey: ")
+end, { desc = "whichkey query lookup" })

@@ -7,10 +7,10 @@ return {
     end,
   },
 
-  {
-    "github/copilot.vim",
-    cmd = "Copilot",
-  },
+  -- {
+  --   "github/copilot.vim",
+  --   cmd = "Copilot",
+  -- },
 
   -- These are some examples, uncomment them if you want to see them work!
   {
@@ -81,6 +81,10 @@ return {
             ["if"] = "@function.inner",
             ["ac"] = "@class.outer",
             ["ic"] = "@class.inner",
+            ["id"] = "@conditional.inner",
+            ["ad"] = "@conditional.outer",
+            ["il"] = "@loop.inner",
+            ["al"] = "@loop.outer",
           },
         },
         swap = {
@@ -228,35 +232,35 @@ return {
   },
 
   -- Codeium AI (both inline code completion and Chat)
-  -- {
-  --   "Exafunction/codeium.vim",
-  --   event = "BufEnter",
-  --   config = function()
-  --     vim.keymap.set("i", "<C-,>", function()
-  --       return vim.fn["codeium#Complete"]()
-  --     end, { expr = true, silent = true })
-  --
-  --     vim.keymap.set("i", "<C-i>", function()
-  --       return vim.fn["codeium#Chat"]()
-  --     end, { expr = true, silent = true })
-  --
-  --     vim.keymap.set("i", "<C-g>", function()
-  --       return vim.fn["codeium#Accept"]()
-  --     end, { expr = true, silent = true })
-  --
-  --     vim.keymap.set("i", "<c-]>", function()
-  --       return vim.fn["codeium#CycleCompletions"](1)
-  --     end, { expr = true, silent = true })
-  --
-  --     vim.keymap.set("i", "<c-[>", function()
-  --       return vim.fn["codeium#CycleCompletions"](-1)
-  --     end, { expr = true, silent = true })
-  --
-  --     vim.keymap.set("i", "<c-x>", function()
-  --       return vim.fn["codeium#Clear"]()
-  --     end, { expr = true, silent = true })
-  --   end,
-  -- },
+  {
+    "Exafunction/codeium.vim",
+    event = "BufEnter",
+    config = function()
+      vim.keymap.set("i", "<C-,>", function()
+        return vim.fn["codeium#Complete"]()
+      end, { expr = true, silent = true })
+
+      vim.keymap.set("i", "<C-i>", function()
+        return vim.fn["codeium#Chat"]()
+      end, { expr = true, silent = true })
+
+      vim.keymap.set("i", "<C-g>", function()
+        return vim.fn["codeium#Accept"]()
+      end, { expr = true, silent = true })
+
+      vim.keymap.set("i", "<c-]>", function()
+        return vim.fn["codeium#CycleCompletions"](1)
+      end, { expr = true, silent = true })
+
+      vim.keymap.set("i", "<c-[>", function()
+        return vim.fn["codeium#CycleCompletions"](-1)
+      end, { expr = true, silent = true })
+
+      vim.keymap.set("i", "<c-x>", function()
+        return vim.fn["codeium#Clear"]()
+      end, { expr = true, silent = true })
+    end,
+  },
 
   {
     "folke/noice.nvim",
@@ -490,8 +494,9 @@ return {
 
   {
     "NStefan002/screenkey.nvim",
-    lazy = false,
     version = "*", -- or branch = "dev", to use the latest commit
+    cmd = "Screenkey",
+    opts = {},
   },
 
   {
@@ -743,7 +748,16 @@ return {
 
   {
     "folke/trouble.nvim",
-    opts = {}, -- for default options, refer to the configuration section for custom setup.
+    opts = {
+      modes = {
+        quickfix = { win = { size = 30 } },
+        diagnostics = { win = { size = 30 } },
+        lsp = { win = { size = 100 } },
+      },
+      action_keys = {
+        close = { "q", "<esc>" },
+      },
+    }, -- for default options, refer to the configuration section for custom setup.
     cmd = "Trouble",
     keys = {
       {
@@ -757,14 +771,19 @@ return {
         desc = "Buffer Diagnostics (Trouble)",
       },
       {
-        "<leader>lS",
+        "<leader>lw",
+        "<cmd>Trouble workspace_diagnostics toggle focus=true win.position=bottom<cr>",
+        desc = "Workspace Diagnostics (Trouble)",
+      },
+      {
+        "<leader>ls",
         "<cmd>Trouble symbols toggle focus=false<cr>",
         desc = "Symbols (Trouble)",
       },
       {
-        "<leader>lD",
-        "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
-        desc = "LSP Definitions / references / ... (Trouble)",
+        "<leader>lr",
+        "<cmd>Trouble lsp toggle focus=true win.position=right<cr>",
+        desc = "LSP References (Trouble)",
       },
       {
         "<leader>lL",
@@ -799,31 +818,6 @@ return {
       vim.keymap.set("n", "<leader>fp", function()
         require("telescope").extensions.projects.projects {}
       end, { desc = "Find Project" })
-    end,
-  },
-
-  {
-    "joshuavial/aider.nvim",
-    -- event = "VeryLazy",
-    lazy = false,
-    opts = {
-      default_bindings = false,
-    },
-    keys = function()
-      return {
-        {
-          "<leader>ao",
-          "<cmd>lua AiderOpen('--env-file $HOME/.aider.env', 'hsplit')<cr>i",
-          -- "<cmd>lua AiderOpen()<cr>i",
-          desc = "Aider Open",
-        },
-        {
-          "<leader>ab",
-          "<cmd>lua AiderBackground('--env-file $HOME/.aider.env')<cr>",
-          desc = "Aider Background",
-          -- defaults to message "Complete as many todo items as you can and remove the comment for any item you complete."
-        },
-      }
     end,
   },
 
@@ -957,36 +951,43 @@ return {
     build = "make",
     opts = {
       default_bindings = false,
-      provider = "deepseek",
-      vendors = {
-        ---@type AvanteProvider
-        deepseek = {
-          endpoint = "https://api.deepseek.com/beta/chat/completions",
-          model = "deepseek-coder",
-          api_key_name = "DEEPSEEK_API_KEY",
-          parse_curl_args = function(opts, code_opts)
-            return {
-              url = opts.endpoint,
-              headers = {
-                ["Accept"] = "application/json",
-                ["Content-Type"] = "application/json",
-                ["Authorization"] = "Bearer " .. os.getenv(opts.api_key_name),
-              },
-              body = {
-                model = opts.model,
-                messages = require("avante.providers").openai.parse_message(code_opts), -- you can make your own message, but this is very advanced
-                temperature = 0,
-                max_tokens = 8192,
-                stream = true, -- this will be set by default.
-              },
-            }
-          end,
-          parse_response_data = function(data_stream, event_state, opts)
-            require("avante.providers").openai.parse_response(data_stream, event_state, opts)
-          end,
-        },
+      gemini = {
+        endpoint = "",
+        type = "vertex",
+        model = "claude-3-5-sonnet@20240620",
+        options = {},
       },
     },
+    --   provider = "deepseek",
+    --   vendors = {
+    --     ---@type AvanteProvider
+    --     deepseek = {
+    --       endpoint = "https://api.deepseek.com/beta",
+    --       model = "deepseek-coder",
+    --       api_key_name = "DEEPSEEK_API_KEY",
+    --       parse_curl_args = function(opts, code_opts)
+    --         return {
+    --           url = opts.endpoint,
+    --           headers = {
+    --             ["Accept"] = "application/json",
+    --             ["Content-Type"] = "application/json",
+    --             ["Authorization"] = "Bearer " .. os.getenv(opts.api_key_name),
+    --           },
+    --           body = {
+    --             model = opts.model,
+    --             messages = require("avante.providers").openai.parse_message(code_opts), -- you can make your own message, but this is very advanced
+    --             temperature = 0,
+    --             max_tokens = 8192,
+    --             stream = true, -- this will be set by default.
+    --           },
+    --         }
+    --       end,
+    --       parse_response_data = function(data_stream, event_state, opts)
+    --         require("avante.providers").openai.parse_response(data_stream, event_state, opts)
+    --       end,
+    --     },
+    --   },
+    -- },
     dependencies = {
       "nvim-tree/nvim-web-devicons",
       "stevearc/dressing.nvim",
@@ -1079,4 +1080,22 @@ return {
       vim.keymap.set({ "n", "v" }, "<leader>np", "<cmd>Telescope neoclip<cr>", { desc = "Neoclip | Paste" })
     end,
   },
+
+  {
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("tiny-inline-diagnostic").setup()
+    end,
+  },
+
+  {
+    -- text objects: https://github.com/chrisgrieser/nvim-various-textobjs?tab=readme-ov-file#list-of-text-objects
+    "chrisgrieser/nvim-various-textobjs",
+    event = "VeryLazy",
+    opts = { useDefaultKeymaps = true },
+  },
+
+  -- https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-ai.md#default-config
+  { "echasnovski/mini.ai", version = "*", event = "BufReadPost", opts = {} },
 }

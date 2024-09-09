@@ -58,9 +58,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
       map("n", "gd", vim.lsp.buf.definition, opts "Go to definition")
       map("n", "gi", vim.lsp.buf.implementation, opts "Go to implementation")
       map("n", "gr", vim.lsp.buf.references, opts "Show references")
-      map("n", "<leader>ls", vim.lsp.buf.signature_help, opts "Show signature help")
+      map("n", "<leader>lS", vim.lsp.buf.signature_help, opts "Show signature help")
       map("n", "<leader>la", vim.lsp.buf.add_workspace_folder, opts "Add workspace folder")
-      map("n", "<leader>lr", vim.lsp.buf.remove_workspace_folder, opts "Remove workspace folder")
+      map("n", "<leader>lR", vim.lsp.buf.remove_workspace_folder, opts "Remove workspace folder")
 
       map("n", "<leader>ll", function()
         print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
