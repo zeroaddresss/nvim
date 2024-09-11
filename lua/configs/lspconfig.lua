@@ -7,6 +7,8 @@ local servers = {
   "html",
   "cssls",
   "ruff",
+  "ruff_lsp",
+  "pyright",
   "gopls",
   "solidity_ls_nomicfoundation",
   "solidity",
