@@ -34,9 +34,12 @@ return {
         "gopls",
         "ruff",
         "ruff-lsp",
+        "pyright",
         "solidity",
         "solidity-ls",
         "solhint",
+        "nomicfoundation-solidity-language-server",
+        "vscode-solidity-server",
         "typescript-language-server",
       },
     },
@@ -947,59 +950,52 @@ return {
   {
     "yetone/avante.nvim",
     event = "VeryLazy",
-    endpoint = "https://api.deepseek.com/beta/chat/completions",
+    endpoint = "https://api.deepseek.com/beta",
     build = "make",
     opts = {
       default_bindings = false,
-      gemini = {
-        endpoint = "",
-        type = "vertex",
-        model = "claude-3-5-sonnet@20240620",
-        options = {},
-      },
-    },
-    --   provider = "deepseek",
-    --   vendors = {
-    --     ---@type AvanteProvider
-    --     deepseek = {
-    --       endpoint = "https://api.deepseek.com/beta",
-    --       model = "deepseek-coder",
-    --       api_key_name = "DEEPSEEK_API_KEY",
-    --       parse_curl_args = function(opts, code_opts)
-    --         return {
-    --           url = opts.endpoint,
-    --           headers = {
-    --             ["Accept"] = "application/json",
-    --             ["Content-Type"] = "application/json",
-    --             ["Authorization"] = "Bearer " .. os.getenv(opts.api_key_name),
-    --           },
-    --           body = {
-    --             model = opts.model,
-    --             messages = require("avante.providers").openai.parse_message(code_opts), -- you can make your own message, but this is very advanced
-    --             temperature = 0,
-    --             max_tokens = 8192,
-    --             stream = true, -- this will be set by default.
-    --           },
-    --         }
-    --       end,
-    --       parse_response_data = function(data_stream, event_state, opts)
-    --         require("avante.providers").openai.parse_response(data_stream, event_state, opts)
-    --       end,
-    --     },
-    --   },
-    -- },
-    dependencies = {
-      "nvim-tree/nvim-web-devicons",
-      "stevearc/dressing.nvim",
-      "nvim-lua/plenary.nvim",
-      "MunifTanjim/nui.nvim",
-      --- The below is optional, make sure to setup it properly if you have lazy=true
-      {
-        "MeanderingProgrammer/render-markdown.nvim",
-        opts = {
-          file_types = { "markdown", "Avante" },
+      provider = "deepseek",
+      vendors = {
+        ---@type AvanteProvider
+        deepseek = {
+          endpoint = "https://api.deepseek.com/chat/completions",
+          model = "deepseek-coder",
+          api_key_name = "DEEPSEEK_API_KEY",
+          parse_curl_args = function(opts, code_opts)
+            return {
+              url = opts.endpoint,
+              headers = {
+                ["Accept"] = "application/json",
+                ["Content-Type"] = "application/json",
+                ["Authorization"] = "Bearer " .. os.getenv(opts.api_key_name),
+              },
+              body = {
+                model = opts.model,
+                messages = require("avante.providers").copilot.parse_message(code_opts), -- you can make your own message, but this is very advanced
+                temperature = 0,
+                max_tokens = 4096,
+                stream = true, -- this will be set by default.
+              },
+            }
+          end,
+          parse_response_data = function(data_stream, event_state, opts)
+            require("avante.providers").copilot.parse_response(data_stream, event_state, opts)
+          end,
         },
-        ft = { "markdown", "Avante" },
+      },
+      dependencies = {
+        "nvim-tree/nvim-web-devicons",
+        "stevearc/dressing.nvim",
+        "nvim-lua/plenary.nvim",
+        "MunifTanjim/nui.nvim",
+        --- The below is optional, make sure to setup it properly if you have lazy=true
+        {
+          "MeanderingProgrammer/render-markdown.nvim",
+          opts = {
+            file_types = { "markdown", "Avante" },
+          },
+          ft = { "markdown", "Avante" },
+        },
       },
     },
   },
