@@ -1094,4 +1094,109 @@ return {
 
   -- https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-ai.md#default-config
   { "echasnovski/mini.ai", version = "*", event = "BufReadPost", opts = {} },
+
+  -- {
+  --   "karb94/neoscroll.nvim",
+  --   event = "VeryLazy",
+  --   config = function()
+  --     require("neoscroll").setup {}
+  --   end,
+  -- },
+
+  {
+    "nvim-treesitter/nvim-treesitter-context",
+    event = "VeryLazy",
+    config = function()
+      require("treesitter-context").setup {
+        -- default values
+        enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+        max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
+        min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
+        line_numbers = true,
+        multiline_threshold = 2, -- Maximum number of lines to show for a single context
+        trim_scope = "outer", -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
+        mode = "cursor", -- Line used to calculate context. Choices: 'cursor', 'topline'
+        -- Separator between context and content. Should be a single character string, like '-'.
+        -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
+        separator = nil,
+        zindex = 20, -- The Z-index of the context window
+        on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
+      }
+    end,
+  },
+
+  -- {
+  --   "echasnovski/mini.indentscope",
+  --   version = "*",
+  --   event = "BufReadPre",
+  --   opts = {
+  --     -- Draw options
+  --     draw = {
+  --       -- Delay (in ms) between event and start of drawing scope indicator
+  --       delay = 0,
+  --
+  --       -- Animation rule for scope's first drawing. A function which, given
+  --       -- next and total step numbers, returns wait time (in ms). See
+  --       -- |MiniIndentscope.gen_animation| for builtin options. To disable
+  --       -- animation, use `require('mini.indentscope').gen_animation.none()`.
+  --       -- animation = --<function: implements constant 20ms between steps>,
+  --
+  --       -- Symbol priority. Increase to display on top of more symbols.
+  --       priority = 2,
+  --     },
+  --     -- Module mappings. Use `''` (empty string) to disable one.
+  --     mappings = {
+  --       -- Textobjects
+  --       object_scope = "ii",
+  --       object_scope_with_border = "ai",
+  --
+  --       -- Motions (jump to respective border line; if not present - body line)
+  --       goto_top = "[i",
+  --       goto_bottom = "]i",
+  --     },
+  --     -- Options which control scope computation
+  --     options = {
+  --       -- Type of scope's border: which line(s) with smaller indent to
+  --       -- categorize as border. Can be one of: 'both', 'top', 'bottom', 'none'.
+  --       border = "both",
+  --
+  --       -- Whether to use cursor column when computing reference indent.
+  --       -- Useful to see incremental scopes with horizontal cursor movements.
+  --       indent_at_cursor = true,
+  --
+  --       -- Whether to first check input line to be a border of adjacent scope.
+  --       -- Use it if you want to place cursor on function header to get scope of
+  --       -- its body.
+  --       try_as_border = true,
+  --     },
+  --
+  --     -- Which character to use for drawing scope indicator
+  --     symbol = "│",
+  --   },
+  -- },
+  --
+  {
+    "shellRaining/hlchunk.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
+      require("hlchunk").setup {
+        chunk = {
+          enable = true,
+          -- ...
+        },
+        indent = {
+          enable = true,
+          -- ...
+        },
+        line_num = {
+          enable = true,
+          -- ...
+        },
+        blank = {
+          enable = true,
+          -- ...
+        },
+      }
+    end,
+  },
 }
