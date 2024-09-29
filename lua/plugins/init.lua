@@ -971,7 +971,10 @@ return {
               },
               body = {
                 model = opts.model,
-                messages = require("avante.providers").copilot.parse_message(code_opts), -- you can make your own message, but this is very advanced
+                messages = { -- you can make your own message, but this is very advanced
+                  { role = "system", content = code_opts.system_prompt },
+                  { role = "user", content = require("avante.providers.openai").get_user_message(code_opts) },
+                },
                 temperature = 0,
                 max_tokens = 4096,
                 stream = true, -- this will be set by default.
@@ -979,7 +982,7 @@ return {
             }
           end,
           parse_response_data = function(data_stream, event_state, opts)
-            require("avante.providers").copilot.parse_response(data_stream, event_state, opts)
+            require("avante.providers").openai.parse_response(data_stream, event_state, opts)
           end,
         },
       },
@@ -989,6 +992,24 @@ return {
         "nvim-lua/plenary.nvim",
         "MunifTanjim/nui.nvim",
         --- The below is optional, make sure to setup it properly if you have lazy=true
+        "echasnovski/mini.icons",
+        {
+          -- support for image pasting
+          "HakonHarnes/img-clip.nvim",
+          event = "VeryLazy",
+          opts = {
+            -- recommended settings
+            default = {
+              embed_image_as_base64 = false,
+              prompt_for_file_name = false,
+              drag_and_drop = {
+                insert_mode = true,
+              },
+              -- required for Windows users
+              use_absolute_path = true,
+            },
+          },
+        },
         {
           "MeanderingProgrammer/render-markdown.nvim",
           opts = {
